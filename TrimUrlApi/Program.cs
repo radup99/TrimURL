@@ -1,4 +1,5 @@
 using TrimUrlApi.Database;
+using TrimUrlApi.Repositories;
 
 namespace TrimUrlApi
 {
@@ -15,6 +16,7 @@ namespace TrimUrlApi
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddDbContext<MainDbContext>();
+            builder.Services.AddScoped<ShortUrlRepository>();
 
             var app = builder.Build();
 
