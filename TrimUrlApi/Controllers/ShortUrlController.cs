@@ -25,6 +25,10 @@ namespace TrimUrlApi.Controllers
         [HttpPost()]
         public async Task<IActionResult> Create(ShortUrlPostModel postModel)
         {
+            if (!_shortUrlService.IsValidUrl(postModel.Url))
+            {
+                return BadRequest($"Invalid URL string: {postModel.Url}");
+            }
             var shortUrl = await _shortUrlService.Create(postModel);
             return Ok(shortUrl);
         }

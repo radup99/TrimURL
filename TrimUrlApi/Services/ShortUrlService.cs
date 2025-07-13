@@ -42,6 +42,12 @@ namespace TrimUrlApi.Services
             return shortUrl;
         }
 
+        public bool IsValidUrl(string url)
+        {
+            _ = Uri.TryCreate(url, UriKind.Absolute, out var uriResult);
+            return uriResult != null && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
+        }
+
         private static string GenerateCode()
         {
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
