@@ -35,7 +35,7 @@ namespace TrimUrlApi.Services
                 UpdatedAt = DateTime.Now,
                 Url = postModel.Url,
                 Code = code,
-                ExpiresAt = postModel.ExpiresAt,
+                ExpiresAt = (postModel.ExpiresAt != DateTime.MaxValue) ? postModel.ExpiresAt : null,
                 AccessCount = 0,
             };
             await _suRepository.Create(shortUrl);
@@ -51,7 +51,10 @@ namespace TrimUrlApi.Services
             }
 
             shortUrl.Url = putModel.Url;
-            shortUrl.ExpiresAt = putModel.ExpiresAt;
+            if (putModel.ExpiresAt != DateTime.MaxValue)
+            {
+                shortUrl.ExpiresAt = putModel.ExpiresAt;
+            }
             shortUrl.UpdatedAt = DateTime.Now;
             await _suRepository.Update(shortUrl);
             return shortUrl;

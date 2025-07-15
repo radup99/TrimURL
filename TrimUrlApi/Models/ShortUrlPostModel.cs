@@ -7,6 +7,6 @@ namespace TrimUrlApi.Models
         [Required]
         public string Url { get; set; }
 
-        public DateTime? ExpiresAt { get; set; }
+        public DateTime? ExpiresAt { get; set; } = DateTime.MaxValue;
     }
 }
