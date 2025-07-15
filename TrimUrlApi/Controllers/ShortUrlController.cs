@@ -32,5 +32,21 @@ namespace TrimUrlApi.Controllers
             var shortUrl = await _shortUrlService.Create(postModel);
             return Ok(shortUrl);
         }
+
+        [HttpPut()]
+        public async Task<IActionResult> UpdateByCode(ShortUrlPutModel putModel)
+        {
+            if (!_shortUrlService.IsValidUrl(putModel.Url))
+            {
+                return BadRequest($"Invalid URL string: {putModel.Url}");
+            }
+
+            var updatedShortUrl = await _shortUrlService.UpdateByCode(putModel);
+            if (updatedShortUrl == null)
+            {
+                return NotFound($"No URL found with code: {putModel.Code}");
+            }
+            return Ok(updatedShortUrl);
+        }
     }
 }

@@ -42,6 +42,21 @@ namespace TrimUrlApi.Services
             return shortUrl;
         }
 
+        public async Task<ShortUrl?> UpdateByCode(ShortUrlPutModel putModel)
+        {
+            var shortUrl = await _suRepository.ReadByCode(putModel.Code);
+            if (shortUrl == null)
+            {
+                return null;
+            }
+
+            shortUrl.Url = putModel.Url;
+            shortUrl.ExpiresAt = putModel.ExpiresAt;
+            shortUrl.UpdatedAt = DateTime.Now;
+            await _suRepository.Update(shortUrl);
+            return shortUrl;
+        }
+
         public bool IsValidUrl(string url)
         {
             _ = Uri.TryCreate(url, UriKind.Absolute, out var uriResult);
