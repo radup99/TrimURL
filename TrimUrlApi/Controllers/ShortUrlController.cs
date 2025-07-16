@@ -48,5 +48,16 @@ namespace TrimUrlApi.Controllers
             }
             return Ok(updatedShortUrl);
         }
+
+        [HttpDelete()]
+        public async Task<IActionResult> DeleteByCode(string code)
+        {
+            var deletedUrl = await _shortUrlService.DeleteByCode(code);
+            if (deletedUrl == null)
+            {
+                return NotFound($"No URL found with code: {code}");
+            }
+            return NoContent();
+        }
     }
 }

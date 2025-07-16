@@ -12,12 +12,15 @@ namespace TrimUrlApi.Models
 
         public int AccessCount { get; set; }
 
+        public DateTime? ExpiresAt { get; set; }
+
         public ShortUrlGetModel(ShortUrl shortUrl)
         {
             Id = shortUrl.Id;
             Url = shortUrl.Url;
             Code = shortUrl.Code;
             AccessCount = shortUrl.AccessCount;
+            ExpiresAt = shortUrl.ExpiresAt;
         }
     }
 }
