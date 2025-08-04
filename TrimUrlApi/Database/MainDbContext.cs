@@ -20,6 +20,7 @@ namespace TrimUrlApi.Database
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<ShortUrl>().ToTable("ShortUrls");
+            modelBuilder.Entity<User>().ToTable("Users");
         }
     }
 }
