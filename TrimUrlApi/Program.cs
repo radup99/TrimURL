@@ -19,6 +19,7 @@ namespace TrimUrlApi
             builder.Services.AddDbContext<MainDbContext>();
             builder.Services.AddScoped<ShortUrlRepository>();
             builder.Services.AddScoped<ShortUrlService>();
+            builder.Services.AddScoped<UserRepository>();
 
             var app = builder.Build();
 
