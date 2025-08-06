@@ -11,6 +11,8 @@ namespace TrimUrlApi.Repositories
 
         public async Task Create(T t)
         {
+            t.CreatedAt = DateTime.Now;
+            t.UpdatedAt = DateTime.Now;
             _dbSet.Add(t);
             await _dbContext.SaveChangesAsync();
         }
@@ -26,6 +28,7 @@ namespace TrimUrlApi.Repositories
 
         public async Task Update(T t)
         {
+            t.UpdatedAt = DateTime.Now;
             _dbSet.Update(t);
             await _dbContext.SaveChangesAsync();
         }

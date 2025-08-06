@@ -12,14 +12,14 @@ namespace TrimUrlApi.Controllers
         private readonly UserService _userService = userService;
 
         [HttpPost()]
-        public async Task<IActionResult> RegisterUser(UserPostModel postModel)
+        public async Task<IActionResult> Create(UserPostModel postModel)
         {
             if (!await _userService.IsUsernameAvailable(postModel.Username) || !await _userService.IsEmailAvailable(postModel.EmailAddress))
             {
                 return BadRequest("Username or email is already in use.");
             }
 
-            await _userService.RegisterUser(postModel);
+            await _userService.Create(postModel);
             return Ok();
         }
     }

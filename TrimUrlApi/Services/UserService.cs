@@ -10,7 +10,7 @@ namespace TrimUrlApi.Services
     {
         private readonly UserRepository _userRepository = userRepository;
 
-        public async Task<User> RegisterUser(UserPostModel postModel)
+        public async Task<User> Create(UserPostModel postModel)
         {
             var user = new User
             {
@@ -19,8 +19,6 @@ namespace TrimUrlApi.Services
                 Role = UserRole.Default,
                 EmailAddress = postModel.EmailAddress,
                 FullName = postModel.FullName,
-                CreatedAt = DateTime.Now,
-                UpdatedAt = DateTime.Now,
             };
             await _userRepository.Create(user);
             return user;
