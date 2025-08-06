@@ -20,6 +20,7 @@ namespace TrimUrlApi
             builder.Services.AddScoped<ShortUrlRepository>();
             builder.Services.AddScoped<ShortUrlService>();
             builder.Services.AddScoped<UserRepository>();
+            builder.Services.AddScoped<UserService>();
 
             var app = builder.Build();
 
