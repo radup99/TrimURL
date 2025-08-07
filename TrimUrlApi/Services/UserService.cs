@@ -10,7 +10,7 @@ namespace TrimUrlApi.Services
     {
         private readonly UserRepository _userRepository = userRepository;
 
-        public async Task<User> Create(UserPostModel postModel)
+        public async Task<UserResponseModel> Create(UserPostModel postModel)
         {
             var user = new User
             {
@@ -21,7 +21,34 @@ namespace TrimUrlApi.Services
                 FullName = postModel.FullName,
             };
             await _userRepository.Create(user);
-            return user;
+            return new UserResponseModel(user);
+        }
+
+        public async Task<UserResponseModel?> GetByUsername(string username)
+        {
+            var user = await _userRepository.ReadByUsername(username);
+            return (user != null) ? new UserResponseModel(user) : null;
+
+        }
+
+        public async Task<UserResponseModel?> UpdateByUsername(UserPutModel putModel)
+        {
+            var user = await _userRepository.ReadByUsername(putModel.Username);
+            if (user == null)
+            {
+                return null;
+            }
+
+            if (putModel.Password != null)
+            {
+                user.PasswordHash = GenerateHash(putModel.Password);
+            }
+            if (putModel.EmailAddress != null)
+            {
+                user.EmailAddress = putModel.EmailAddress;
+            }
+            await _userRepository.Update(user);
+            return new UserResponseModel(user);
         }
 
         public async Task<bool> IsUsernameAvailable(string username)
