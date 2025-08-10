@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using TrimUrlApi.Models;
 using TrimUrlApi.Services;
+using TrimUrlApi.Extensions;
 
 namespace TrimUrlApi.Controllers
 {
@@ -23,10 +25,12 @@ namespace TrimUrlApi.Controllers
             return Ok(userRespModel);
         }
 
-        [HttpGet()]
-        public async Task<IActionResult> GetByUsername(string username)
+        [Authorize]
+        [HttpGet("me")]
+        public async Task<IActionResult> GetByAuthUsername()
         {
-            var userRespModel = await _userService.GetByUsername(username);
+            var username = User.GetAuthUsername();
+            var userRespModel = (username != null) ? await _userService.GetByUsername(username) : null;
             if (userRespModel == null)
             {
                 return NotFound($"Username not found: {username}");
@@ -34,20 +38,35 @@ namespace TrimUrlApi.Controllers
             return Ok(userRespModel);
         }
 
-        [HttpPut()]
-        public async Task<IActionResult> UpdateByUsername(UserPutModel putModel)
+        [Authorize]
+        [HttpPut("me")]
+        public async Task<IActionResult> UpdateByAuthUsername(UserPutModel putModel)
         {
             if (putModel.Password == null && putModel.EmailAddress == null)
             {
                 return BadRequest("At least one field must be provided: (password, emailAddress).");
             }
 
-            var userRespModel = await _userService.UpdateByUsername(putModel);
+            var username = User.GetAuthUsername();
+            var userRespModel = (username != null) ? await _userService.UpdateByUsername(username, putModel) : null;
             if (userRespModel == null)
             {
-                return NotFound($"Username does not exist: {putModel.Username}");
+                return NotFound($"Username does not exist: {username}");
             }
             return Ok(userRespModel);
+        }
+
+        [Authorize]
+        [HttpDelete("me")]
+        public async Task<IActionResult> DeleteByAuthUsername()
+        {
+            var username = User.GetAuthUsername();
+            var userRespModel = (username != null) ? await _userService.DeleteByUsername(username) : null;
+            if (userRespModel == null)
+            {
+                return NotFound($"Username not found: {username}");
+            }
+            return NoContent();
         }
     }
 }

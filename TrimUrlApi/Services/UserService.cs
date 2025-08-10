@@ -31,9 +31,9 @@ namespace TrimUrlApi.Services
 
         }
 
-        public async Task<UserResponseModel?> UpdateByUsername(UserPutModel putModel)
+        public async Task<UserResponseModel?> UpdateByUsername(string username, UserPutModel putModel)
         {
-            var user = await _userRepository.ReadByUsername(putModel.Username);
+            var user = await _userRepository.ReadByUsername(username);
             if (user == null)
             {
                 return null;
@@ -49,6 +49,18 @@ namespace TrimUrlApi.Services
             }
             await _userRepository.Update(user);
             return new UserResponseModel(user);
+        }
+
+        public async Task<User?> DeleteByUsername(string username)
+        {
+            var user = await _userRepository.ReadByUsername(username);
+            if (user == null)
+            {
+                return null;
+            }
+
+            await _userRepository.DeleteById(user.Id);
+            return user;
         }
 
         public async Task<bool> IsUsernameAvailable(string username)
