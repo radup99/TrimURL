@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using TrimUrlApi.Models;
 using TrimUrlApi.Services;
+using TrimUrlApi.Extensions;
 
 namespace TrimUrlApi.Controllers
 {
@@ -19,6 +21,11 @@ namespace TrimUrlApi.Controllers
             {
                 return NotFound($"No URL found with code: {code}");
             }
+
+            if (getModel.ExpiresAt < DateTime.Now)
+            {
+                return StatusCode(StatusCodes.Status410Gone, "URL expired");
+            }
             return Ok(getModel);
         }
 
@@ -29,10 +36,17 @@ namespace TrimUrlApi.Controllers
             {
                 return BadRequest($"Invalid URL string: {postModel.Url}");
             }
-            var shortUrl = await _shortUrlService.Create(postModel);
+
+            int? creatorId = null;
+            if (User.Identity?.IsAuthenticated == true)
+            {
+                creatorId = User.GetAuthUserId();
+            }
+            var shortUrl = await _shortUrlService.Create(postModel, creatorId);
             return Ok(shortUrl);
         }
 
+        [Authorize]
         [HttpPut()]
         public async Task<IActionResult> UpdateByCode(ShortUrlPutModel putModel)
         {
@@ -41,21 +55,24 @@ namespace TrimUrlApi.Controllers
                 return BadRequest($"Invalid URL string: {putModel.Url}");
             }
 
-            var updatedShortUrl = await _shortUrlService.UpdateByCode(putModel);
+            int? creatorId = User.GetAuthUserId();
+            var updatedShortUrl = await _shortUrlService.UpdateByCode(putModel, creatorId);
             if (updatedShortUrl == null)
             {
-                return NotFound($"No URL found with code: {putModel.Code}");
+                return Unauthorized();
             }
             return Ok(updatedShortUrl);
         }
 
+        [Authorize]
         [HttpDelete()]
         public async Task<IActionResult> DeleteByCode(string code)
         {
-            var deletedUrl = await _shortUrlService.DeleteByCode(code);
+            int? creatorId = User.GetAuthUserId();
+            var deletedUrl = await _shortUrlService.DeleteByCode(code, creatorId);
             if (deletedUrl == null)
             {
-                return NotFound($"No URL found with code: {code}");
+                return Unauthorized();
             }
             return NoContent();
         }

@@ -22,7 +22,7 @@ namespace TrimUrlApi.Services
             return new ShortUrlGetModel(shortUrl);
         }
 
-        public async Task<ShortUrl> Create(ShortUrlPostModel postModel)
+        public async Task<ShortUrl> Create(ShortUrlPostModel postModel, int? creatorId)
         {
             var code = GenerateCode();
             while (await _suRepository.ReadByCode(code) != null)
@@ -31,6 +31,7 @@ namespace TrimUrlApi.Services
             }
             var shortUrl = new ShortUrl
             {
+                CreatorId = creatorId,
                 Url = postModel.Url,
                 Code = code,
                 ExpiresAt = (postModel.ExpiresAt != DateTime.MaxValue) ? postModel.ExpiresAt : null,
@@ -40,10 +41,15 @@ namespace TrimUrlApi.Services
             return shortUrl;
         }
 
-        public async Task<ShortUrl?> UpdateByCode(ShortUrlPutModel putModel)
+        public async Task<ShortUrl?> UpdateByCode(ShortUrlPutModel putModel, int? creatorId)
         {
             var shortUrl = await _suRepository.ReadByCode(putModel.Code);
             if (shortUrl == null)
+            {
+                return null;
+            }
+
+            if (shortUrl.CreatorId == null || shortUrl.CreatorId != creatorId)
             {
                 return null;
             }
@@ -57,10 +63,15 @@ namespace TrimUrlApi.Services
             return shortUrl;
         }
 
-        public async Task<ShortUrl?> DeleteByCode(string code)
+        public async Task<ShortUrl?> DeleteByCode(string code, int? creatorId)
         {
             var shortUrl = await _suRepository.ReadByCode(code);
             if (shortUrl == null)
+            {
+                return null;
+            }
+
+            if (shortUrl.CreatorId == null || shortUrl.CreatorId != creatorId)
             {
                 return null;
             }
