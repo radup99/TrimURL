@@ -13,5 +13,9 @@ namespace TrimUrlApi.Repositories
         {
             return await _dbSet.FirstOrDefaultAsync(su => su.Code == code);
         }
+        public async Task<List<ShortUrl>> ReadByCreatorId(int? creatorId)
+        {
+            return await _dbSet.Where(su => su.CreatorId == creatorId).ToListAsync();
+        }
     }
 }

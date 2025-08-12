@@ -22,6 +22,12 @@ namespace TrimUrlApi.Services
             return new ShortUrlGetModel(shortUrl);
         }
 
+        public async Task<List<ShortUrlGetModel>> GetByCreatorId(int? id)
+        {
+            var shortUrlList = await _suRepository.ReadByCreatorId(id);
+            return shortUrlList.Select(su => new ShortUrlGetModel(su)).ToList();
+        }
+
         public async Task<ShortUrl> Create(ShortUrlPostModel postModel, int? creatorId)
         {
             var code = GenerateCode();

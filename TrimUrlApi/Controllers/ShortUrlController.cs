@@ -29,6 +29,20 @@ namespace TrimUrlApi.Controllers
             return Ok(getModel);
         }
 
+        [Authorize]
+        [HttpGet("me")]
+        public async Task<IActionResult> GetByCreatorId()
+        {
+            var creatorId = User.GetAuthUserId();
+            var shortUrlList = await _shortUrlService.GetByCreatorId(creatorId);
+            if (creatorId == null || shortUrlList.Count == 0)
+            {
+                return NotFound($"No URLs found");
+            }
+
+            return Ok(shortUrlList);
+        }
+
         [HttpPost()]
         public async Task<IActionResult> Create(ShortUrlPostModel postModel)
         {
