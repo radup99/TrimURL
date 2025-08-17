@@ -41,6 +41,7 @@ namespace TrimUrlApi.Services
             {
                 new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
                 new Claim(ClaimTypes.Role, user.Role.ToString()),
+                new Claim("roleNum", ((int)user.Role).ToString()),
                 new Claim("username", user.Username),
             };
 
