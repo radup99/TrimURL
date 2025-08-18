@@ -31,15 +31,14 @@ namespace TrimUrlApi.Extensions
 
         public static bool HasAdminPrivileges(this ClaimsPrincipal user)
         {
-            List<UserRole?> adminRoles = [UserRole.Admin, UserRole.Owner];
             var role = user.GetAuthUserRole();
-            return role != null && adminRoles.Contains(role);
+            return role is UserRole.Admin or UserRole.Owner;
         }
 
         public static bool HasOwnerPrivileges(this ClaimsPrincipal user)
         {
             var role = user.GetAuthUserRole();
-            return role != null && role == UserRole.Owner;
+            return role is UserRole.Owner;
         }
     }
 }

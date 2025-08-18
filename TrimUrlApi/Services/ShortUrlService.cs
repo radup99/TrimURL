@@ -86,6 +86,18 @@ namespace TrimUrlApi.Services
             return shortUrl;
         }
 
+        public async Task<ShortUrl?> DeleteByCode(string code)
+        {
+            var shortUrl = await _suRepository.ReadByCode(code);
+            if (shortUrl == null)
+            {
+                return null;
+            }
+
+            await _suRepository.DeleteById(shortUrl.Id);
+            return shortUrl;
+        }
+
         public bool IsValidUrl(string url)
         {
             _ = Uri.TryCreate(url, UriKind.Absolute, out var uriResult);
