@@ -61,8 +61,8 @@ namespace TrimUrlApi.Controllers
         }
 
         [Authorize]
-        [HttpPut()]
-        public async Task<IActionResult> UpdateByCode(ShortUrlPutModel putModel)
+        [HttpPut("code/{code}")]
+        public async Task<IActionResult> UpdateByCode(string code, ShortUrlPutModel putModel)
         {
             if (!_shortUrlService.IsValidUrl(putModel.Url))
             {
@@ -70,7 +70,7 @@ namespace TrimUrlApi.Controllers
             }
 
             int? creatorId = User.GetAuthUserId();
-            var updatedShortUrl = await _shortUrlService.UpdateByCode(putModel, creatorId);
+            var updatedShortUrl = await _shortUrlService.UpdateByCode(code, putModel, creatorId);
             if (updatedShortUrl == null)
             {
                 return Unauthorized();

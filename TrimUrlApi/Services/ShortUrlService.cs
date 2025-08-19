@@ -47,9 +47,9 @@ namespace TrimUrlApi.Services
             return shortUrl;
         }
 
-        public async Task<ShortUrl?> UpdateByCode(ShortUrlPutModel putModel, int? creatorId)
+        public async Task<ShortUrl?> UpdateByCode(string code, ShortUrlPutModel putModel, int? creatorId)
         {
-            var shortUrl = await _suRepository.ReadByCode(putModel.Code);
+            var shortUrl = await _suRepository.ReadByCode(code);
             if (shortUrl == null)
             {
                 return null;
