@@ -12,7 +12,7 @@ public static class RateLimiterExtensions
             options.RejectionStatusCode =
                 StatusCodes.Status429TooManyRequests;
 
-            options.AddPolicy("authentication", context =>
+            options.AddPolicy(RateLimitPolicies.Authentication, context =>
             {
                 var ip = GetIpAddress(context);
 
@@ -26,7 +26,7 @@ public static class RateLimiterExtensions
                     });
             });
 
-            options.AddPolicy("url-creation", context =>
+            options.AddPolicy(RateLimitPolicies.UrlCreation, context =>
             {
                 var ip = GetIpAddress(context);
 
@@ -40,7 +40,7 @@ public static class RateLimiterExtensions
                     });
             });
 
-            options.AddPolicy("general-api", context =>
+            options.AddPolicy(RateLimitPolicies.GeneralApi, context =>
             {
                 var ip = GetIpAddress(context);
 

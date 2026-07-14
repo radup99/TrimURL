@@ -8,7 +8,7 @@ using TrimUrlApi.Extensions;
 namespace TrimUrlApi.Controllers
 {
     [ApiController]
-    [EnableRateLimiting("general-api")]
+    [EnableRateLimiting(RateLimitPolicies.GeneralApi)]
     [Route("short-urls")]
     public class ShortUrlController(ILogger<ShortUrlController> logger, IShortUrlService shortUrlService) : ControllerBase
     {
@@ -32,7 +32,7 @@ namespace TrimUrlApi.Controllers
         }
 
         [HttpPost()]
-        [EnableRateLimiting("url-creation")]
+        [EnableRateLimiting(RateLimitPolicies.UrlCreation)]
         public async Task<IActionResult> Create(ShortUrlPostModel postModel)
         {
             int? userId = null;

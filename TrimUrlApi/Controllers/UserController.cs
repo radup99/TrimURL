@@ -8,7 +8,7 @@ using TrimUrlApi.Services;
 namespace TrimUrlApi.Controllers
 {
     [ApiController]
-    [EnableRateLimiting("general-api")]
+    [EnableRateLimiting(RateLimitPolicies.GeneralApi)]
     [Route("users")]
     public class UserController(ILogger<UserController> logger, IUserService userService) : ControllerBase
     {
@@ -16,7 +16,7 @@ namespace TrimUrlApi.Controllers
         private readonly IUserService _userService = userService;
 
         [HttpPost()]
-        [EnableRateLimiting("authentication")]
+        [EnableRateLimiting(RateLimitPolicies.Authentication)]
         public async Task<IActionResult> Create(UserPostModel postModel)
         {
             var userRespModel = await _userService.Create(postModel);

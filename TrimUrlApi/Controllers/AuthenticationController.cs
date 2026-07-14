@@ -1,12 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
+using TrimUrlApi.Extensions;
 using TrimUrlApi.Models;
 using TrimUrlApi.Services;
 
 namespace TrimUrlApi.Controllers
 {
     [ApiController]
-    [EnableRateLimiting("general-api")]
+    [EnableRateLimiting(RateLimitPolicies.GeneralApi)]
     [Route("login")]
     public class AuthenticationController(ILogger<ShortUrlController> logger, IAuthenticationService authService, IConfiguration config) : ControllerBase
     {
@@ -15,7 +16,7 @@ namespace TrimUrlApi.Controllers
         private readonly IConfiguration _config = config;
 
         [HttpPost]
-        [EnableRateLimiting("authentication")]
+        [EnableRateLimiting(RateLimitPolicies.Authentication)]
         public async Task<IActionResult> Post(LoginPostModel loginModel)
         {
             var user = await _authService.GetUserByCredentials(loginModel);
