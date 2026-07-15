@@ -3,6 +3,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Diagnostics;
 using System.Text;
 using TrimUrlApi.Database;
+using TrimUrlApi.Extensions;
 using TrimUrlApi.Middleware;
 using TrimUrlApi.Repositories;
 using TrimUrlApi.Services;
@@ -16,6 +17,7 @@ namespace TrimUrlApi
             var builder = WebApplication.CreateBuilder(args);
 
             builder.Services.AddControllers();
+            builder.Services.AddRateLimitingPolicies();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(c =>
             {
@@ -88,6 +90,7 @@ namespace TrimUrlApi
             app.UseAuthentication();
             app.UseAuthorization();
 
+            app.UseRateLimiter();
 
             app.MapControllers();
 

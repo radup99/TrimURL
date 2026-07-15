@@ -1,12 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
+using TrimUrlApi.Extensions;
 using TrimUrlApi.Models;
 using TrimUrlApi.Services;
-using TrimUrlApi.Extensions;
 
 namespace TrimUrlApi.Controllers
 {
     [ApiController]
+    [EnableRateLimiting(RateLimitPolicies.GeneralApi)]
     [Route("users")]
     public class UserController(ILogger<UserController> logger, IUserService userService) : ControllerBase
     {
@@ -14,6 +16,7 @@ namespace TrimUrlApi.Controllers
         private readonly IUserService _userService = userService;
 
         [HttpPost()]
+        [EnableRateLimiting(RateLimitPolicies.Authentication)]
         public async Task<IActionResult> Create(UserPostModel postModel)
         {
             var userRespModel = await _userService.Create(postModel);

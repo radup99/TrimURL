@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.RateLimiting;
 using TrimUrlApi.Models;
 using TrimUrlApi.Services;
 using TrimUrlApi.Extensions;
@@ -7,6 +8,7 @@ using TrimUrlApi.Extensions;
 namespace TrimUrlApi.Controllers
 {
     [ApiController]
+    [EnableRateLimiting(RateLimitPolicies.GeneralApi)]
     [Route("short-urls")]
     public class ShortUrlController(ILogger<ShortUrlController> logger, IShortUrlService shortUrlService) : ControllerBase
     {
@@ -30,6 +32,7 @@ namespace TrimUrlApi.Controllers
         }
 
         [HttpPost()]
+        [EnableRateLimiting(RateLimitPolicies.UrlCreation)]
         public async Task<IActionResult> Create(ShortUrlPostModel postModel)
         {
             int? userId = null;
