@@ -10,7 +10,7 @@ This project was built as part of my backend portfolio to showcase clean archite
 
 ## Live Demo
 
-- **Swagger UI:** https://trimurlapi.azurewebsites.net/swagger/
+- **Swagger UI:** https://trimurlapi.azurewebsites.net/
 
 ## Features
 

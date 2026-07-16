@@ -77,12 +77,12 @@ namespace TrimUrlApi
 
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
+            app.UseSwagger();
+            app.UseSwaggerUI(options =>
             {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
+                options.RoutePrefix = string.Empty;
+                options.SwaggerEndpoint("/swagger/v1/swagger.json", "TrimURL API v1");
+            });
 
             app.UseHttpsRedirection();
             app.UseMiddleware<ExceptionMiddleware>();
