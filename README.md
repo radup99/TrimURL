@@ -43,21 +43,13 @@ This project was built as part of my backend portfolio to showcase clean archite
 
 **Backend**
 - ASP.NET Core 8
-- Entity Framework Core
 
 **Database**
 - PostgreSQL
-
-**Authentication**
-- JWT Bearer Authentication
-- ASP.NET Identity
+- Entity Framework Core
 
 **Unit Testing**
 - xUnit
-- Moq
-
-**DevOps**
-- GitHub Actions
 
 ## Architecture
 
