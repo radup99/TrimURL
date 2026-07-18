@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Diagnostics;
 using System.Text;
@@ -48,7 +49,9 @@ namespace TrimUrlApi
                     }
                 });
             });
-            builder.Services.AddDbContext<MainDbContext>();
+            builder.Services.AddDbContext<MainDbContext>(options =>
+                options.UseNpgsql(builder.Configuration.GetConnectionString("TrimUrlDatabase"))
+            );
             builder.Services.AddScoped<IShortUrlRepository, ShortUrlRepository>();
             builder.Services.AddScoped<IShortUrlService, ShortUrlService>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();

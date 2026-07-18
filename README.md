@@ -46,7 +46,7 @@ This project was built as part of my backend portfolio to showcase clean archite
 - Entity Framework Core
 
 **Database**
-- SQLite
+- PostgreSQL
 
 **Authentication**
 - JWT Bearer Authentication
@@ -72,7 +72,7 @@ Repositories
       ↓
 Entity Framework Core
       ↓
-SQLite
+PostgreSQL
 ```
 
 Responsibilities:
@@ -122,7 +122,6 @@ dotnet test
 
 ## Future Improvements
 
-- PostgreSQL support
 - Redis caching
 - Docker support
 - Integration Testing

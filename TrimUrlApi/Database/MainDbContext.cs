@@ -5,20 +5,17 @@ namespace TrimUrlApi.Database
 {
     public class MainDbContext : DbContext
     {
+        public DbSet<User> Users { get; set; }
         public DbSet<ShortUrl> ShortUrls { get; set; }
 
-        public MainDbContext()
+        public MainDbContext(DbContextOptions<MainDbContext> options)
+            : base(options)
         {
-            Database.EnsureCreated();
-        }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlite(@"Data Source=Database.db");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            //base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<ShortUrl>().ToTable("ShortUrls");
             modelBuilder.Entity<User>().ToTable("Users");
         }
