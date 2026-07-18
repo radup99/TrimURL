@@ -14,7 +14,7 @@ namespace TrimUrlApi.Services
         {
             var shortUrl = await GetByCodeOrThrow(code);
 
-            if (shortUrl.ExpiresAt < DateTime.Now)
+            if (shortUrl.ExpiresAt < DateTime.UtcNow)
             {
                 throw new ShortUrlExpiredException();
             }
