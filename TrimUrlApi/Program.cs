@@ -78,6 +78,13 @@ namespace TrimUrlApi
                 };
             });
 
+            builder.Services.AddStackExchangeRedisCache(options =>
+            {
+                options.Configuration = builder.Configuration.GetConnectionString("Redis");
+            });
+
+            builder.Services.AddScoped<ICacheService, RedisCacheService>();
+
             var app = builder.Build();
 
             app.UseSwagger();
