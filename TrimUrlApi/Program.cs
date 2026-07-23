@@ -78,12 +78,20 @@ namespace TrimUrlApi
                 };
             });
 
-            builder.Services.AddStackExchangeRedisCache(options =>
+            if (!string.IsNullOrEmpty(builder.Configuration.GetConnectionString("Redis")))
             {
-                options.Configuration = builder.Configuration.GetConnectionString("Redis");
-            });
+                builder.Services.AddStackExchangeRedisCache(options =>
+                {
+                    options.Configuration = builder.Configuration.GetConnectionString("Redis");
+                });
 
-            builder.Services.AddScoped<ICacheService, RedisCacheService>();
+                builder.Services.AddScoped<ICacheService, RedisCacheService>();
+            }
+            else
+            {
+                builder.Services.AddMemoryCache();
+                builder.Services.AddScoped<ICacheService, MemoryCacheService>();
+            }
 
             var app = builder.Build();
 
