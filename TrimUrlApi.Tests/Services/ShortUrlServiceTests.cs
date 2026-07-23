@@ -20,12 +20,14 @@ namespace TrimUrlApi.Tests.Services
         private const int InvalidCreatorId = 2;
 
         private readonly Mock<IShortUrlRepository> _repoMock;
+        private readonly Mock<ICacheService> _cacheMock;
         private readonly ShortUrlService _service;
 
         public ShortUrlServiceTests()
         {
             _repoMock = new Mock<IShortUrlRepository>();
-            _service = new ShortUrlService(_repoMock.Object);
+            _cacheMock = new Mock<ICacheService>();
+            _service = new ShortUrlService(_repoMock.Object, _cacheMock.Object);
         }
 
 
