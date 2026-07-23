@@ -36,6 +36,7 @@ This project was built as part of my backend portfolio to showcase clean archite
 ### Quality
 
 - Global exception handling middleware
+- Redis and In-Memory caching
 - Unit tests using xUnit + Moq
 - GitHub Actions CI
 
@@ -114,9 +115,7 @@ dotnet test
 
 ## Future Improvements
 
-- Redis caching
-- Docker support
-- Integration Testing
+- Frontend Web Application
 
 ## License
 

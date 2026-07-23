@@ -2,25 +2,32 @@
 using TrimUrlApi.Models;
 using TrimUrlApi.Repositories;
 using TrimUrlApi.Exceptions;
+using Microsoft.Extensions.Caching.Distributed;
 
 namespace TrimUrlApi.Services
 {
-    public class ShortUrlService(IShortUrlRepository suReporitory) : IShortUrlService
+    public class ShortUrlService(IShortUrlRepository suReporitory, ICacheService cacheService) : IShortUrlService
     {
         private readonly IShortUrlRepository _suRepository = suReporitory;
+        private readonly ICacheService _cacheService = cacheService;
         private static readonly Random _random = new();
 
         public async Task<ShortUrlGetModel?> GetByCode(string code)
         {
-            var shortUrl = await GetByCodeOrThrow(code);
+            var cacheKey = GetCacheKey(code);
+            var shortUrl = await _cacheService.GetAsync<ShortUrl>(cacheKey)
+                         ?? await GetByCodeOrThrow(code);
 
             if (shortUrl.ExpiresAt < DateTime.UtcNow)
             {
+                await _cacheService.RemoveAsync(cacheKey);
                 throw new ShortUrlExpiredException();
             }
 
             shortUrl.AccessCount++;
             await _suRepository.Update(shortUrl);
+            await _cacheService.SetAsync(cacheKey, shortUrl, TimeSpan.FromHours(24));
+
             return new ShortUrlGetModel(shortUrl);
         }
 
@@ -57,6 +64,7 @@ namespace TrimUrlApi.Services
                 AccessCount = 0,
             };
             await _suRepository.Create(shortUrl);
+
             return shortUrl;
         }
 
@@ -75,7 +83,11 @@ namespace TrimUrlApi.Services
             {
                 shortUrl.ExpiresAt = putModel.ExpiresAt;
             }
+
+            var cacheKey = GetCacheKey(code);
             await _suRepository.Update(shortUrl);
+            await _cacheService.SetAsync(cacheKey, shortUrl, TimeSpan.FromHours(24));
+
             return shortUrl;
         }
 
@@ -84,7 +96,10 @@ namespace TrimUrlApi.Services
             var shortUrl = await GetByCodeOrThrow(code);
             EnsureOwnershipOrThrow(shortUrl, userId);
 
+            var cacheKey = GetCacheKey(code);
             await _suRepository.DeleteById(shortUrl.Id);
+            await _cacheService.RemoveAsync(cacheKey);
+
             return shortUrl;
         }
 
@@ -92,7 +107,10 @@ namespace TrimUrlApi.Services
         {
             var shortUrl = await GetByCodeOrThrow(code);
 
+            var cacheKey = GetCacheKey(code);
             await _suRepository.DeleteById(shortUrl.Id);
+            await _cacheService.RemoveAsync(cacheKey);
+
             return shortUrl;
         }
 
@@ -126,6 +144,11 @@ namespace TrimUrlApi.Services
             return new string(Enumerable.Range(0, 6)
                 .Select(_ => chars[_random.Next(chars.Length)])
                 .ToArray());
+        }
+
+        private static string GetCacheKey(string code)
+        {
+            return $"shorturl:{code}";
         }
     }
 }
