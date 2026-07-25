@@ -11,6 +11,8 @@ namespace TrimUrlApi.Tests.Services
     public class UserServiceTests
     {
         private const string ValidUsername = "john";
+        private const string StrongPassword = "DG3qTJdgz@5ZPUegfQcb";
+
         private const string InvalidUsername = "does-not-exist";
 
         private readonly Mock<IUserRepository> _repoMock;
@@ -28,7 +30,7 @@ namespace TrimUrlApi.Tests.Services
             var postModel = new UserPostModel
             {
                 Username = ValidUsername,
-                Password = "password123",
+                Password = StrongPassword,
                 EmailAddress = "john@test.com",
                 FullName = "John Doe"
             };
@@ -58,7 +60,7 @@ namespace TrimUrlApi.Tests.Services
             var postModel = new UserPostModel
             {
                 Username = ValidUsername,
-                Password = "password123",
+                Password = StrongPassword,
                 EmailAddress = "john@test.com"
             };
 
@@ -74,7 +76,7 @@ namespace TrimUrlApi.Tests.Services
             var postModel = new UserPostModel
             {
                 Username = ValidUsername,
-                Password = "password123",
+                Password = StrongPassword,
                 EmailAddress = "john@test.com"
             };
 
@@ -139,7 +141,7 @@ namespace TrimUrlApi.Tests.Services
         [Fact]
         public async Task UpdateByUsername_ShouldUpdatePassword()
         {
-            var newPassword = "newPassword123";
+            var newPassword = "PBawf!7ZXABqamkAzkXvR";
             var user = new User
             {
                 Id = 1,

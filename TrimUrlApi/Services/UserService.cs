@@ -4,6 +4,7 @@ using TrimUrlApi.Enums;
 using TrimUrlApi.Exceptions;
 using TrimUrlApi.Models;
 using TrimUrlApi.Repositories;
+using TrimUrlApi.Validators;
 
 namespace TrimUrlApi.Services
 {
@@ -22,6 +23,9 @@ namespace TrimUrlApi.Services
             {
                 throw new UnavailableEmailException(postModel.EmailAddress);
             }
+
+            UserValidator.ValidateUsername(postModel.Username);
+            UserValidator.ValidatePassword(postModel.Password);
 
             var user = new User
             {
@@ -55,6 +59,7 @@ namespace TrimUrlApi.Services
             }
             if (putModel.Password != null)
             {
+                UserValidator.ValidatePassword(putModel.Password);
                 user.PasswordHash = GenerateHash(putModel.Password);
             }
             if (putModel.EmailAddress != null)
