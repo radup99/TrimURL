@@ -9,7 +9,7 @@ namespace TrimUrlApi.Models
         public string Username { get; set; }
 
         [Required]
-        [StringLength(30, MinimumLength = 10)]
+        [StringLength(50, MinimumLength = 10)]
         public string Password { get; set; }
     }
 }

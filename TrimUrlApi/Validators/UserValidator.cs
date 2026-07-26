@@ -32,9 +32,9 @@ namespace TrimUrlApi.Validators
                 throw new WeakPasswordException("Password must be at least 10 characters.");
             }
 
-            if (password.Length > 30)
+            if (password.Length > 50)
             {
-                throw new WeakPasswordException("Maximum password length exceeded (64 characters).");
+                throw new WeakPasswordException("Maximum password length exceeded (50 characters).");
             }
 
             if (!password.Any(c => char.IsUpper(c)))
