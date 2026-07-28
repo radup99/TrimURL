@@ -1,0 +1,7 @@
+.git/
+.github/
+.vs/
+TrimUrlApi/.vs/
+TrimUrlApi/bin/
+TrimUrlApi/obj/
+.env

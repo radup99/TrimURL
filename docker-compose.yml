@@ -1,0 +1,12 @@
+services:
+  trimurl-api:
+    build: .
+
+    ports:
+      - "8080:8080"
+
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__TrimUrlDatabase: ${DATABASE_CONNECTION_STRING}
+      ConnectionStrings__Redis: ${REDIS_CONNECTION_STRING}
+      Jwt__Secret: ${JWT_SECRET}
