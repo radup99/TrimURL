@@ -1,6 +1,9 @@
 # TrimURL
 
 ![.NET](https://img.shields.io/badge/.NET-8.0-blue)
+![Docker](https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?logo=postgresql&logoColor=white)
+![Redis](https://img.shields.io/badge/Redis-DC382D?logo=redis&logoColor=white)
 ![License](https://img.shields.io/badge/License-MIT-green)
 ![Build](https://github.com/raduplacinta99/TrimURL/actions/workflows/dotnet-desktop.yml/badge.svg)
 
@@ -23,22 +26,25 @@ This project was built as part of my backend portfolio to showcase clean archite
 - Delete URLs
 - Retrieve URLs by creator
 
-### Authentication
+### Authentication & Authorization
 
 - JWT Authentication & Authorization
 - User registration and login
+- Role-based authorization
 
-### Security
+### Performance
 
+- Redis distributed caching
+- In-memory caching
 - Rate limiting
-- Role based authorization
 
-### Quality
+### Quality & Reliability
 
 - Global exception handling middleware
+- Input validation
 - Redis and In-Memory caching
 - Unit tests using xUnit + Moq
-- GitHub Actions CI
+- GitHub Actions CI/CD
 
 ## Tech Stack
 
@@ -49,8 +55,17 @@ This project was built as part of my backend portfolio to showcase clean archite
 - PostgreSQL
 - Entity Framework Core
 
+**Caching**
+- Redis
+- IMemoryCache
+
 **Unit Testing**
 - xUnit
+
+**DevOps**
+- Docker
+- Github Actions
+- Azure App Service
 
 ## Architecture
 
@@ -79,6 +94,8 @@ Responsibilities:
 ### Prerequisites
 
 - .NET 8 SDK
+- Docker (optional)
+- Redis (optional)
 
 ### Clone the repository
 
@@ -94,6 +111,16 @@ cd TrimURL/TrimUrlApi
 dotnet restore
 ```
 
+### Configuration
+
+The application uses ASP.NET Core configuration and environment variables. The following settings are required:
+
+| Setting | Description |
+|---------|-------------|
+| `ConnectionStrings__TrimUrlDatabase` | PostgreSQL connection string |
+| `ConnectionStrings__Redis` | Redis connection string |
+| `Jwt__Secret` | Secret used to sign JWT tokens |
+
 ### Apply migrations
 
 ```bash
@@ -106,16 +133,36 @@ dotnet ef database update
 dotnet run
 ```
 
+### Run with Docker Compose
+
+```bash
+docker compose up --build
+```
+
 ### Running Tests
 
 ```bash
-cd TrimURL/TrimUrlApi.Tests
 dotnet test
 ```
+
+## CI/CD
+
+Every push to the `main` branch automatically:
+
+1. Builds the application.
+2. Runs the test suite.
+3. Builds a Docker image.
+4. Pushes the image to Docker Hub.
+5. Deploys the latest image to Azure App Service.
 
 ## Future Improvements
 
 - Frontend Web Application
+- Custom short codes
+- Improved URL analytics (browsers, locations etc.)
+- QR code generation
+- Email verification
+- Metrics and monitoring
 
 ## License
 
