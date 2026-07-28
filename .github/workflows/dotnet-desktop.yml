@@ -37,6 +37,8 @@ jobs:
     name: Build Docker & Deploy
     needs: ci
 
+    # Only run this job on pushes to main
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
 
     runs-on: ubuntu-latest
 
