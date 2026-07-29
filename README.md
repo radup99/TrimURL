@@ -113,12 +113,12 @@ dotnet restore
 
 ### Configuration
 
-The application uses ASP.NET Core configuration and environment variables. The following settings are required:
+The application uses ASP.NET Core configuration and environment variables.
 
 | Setting | Description |
 |---------|-------------|
 | `ConnectionStrings__TrimUrlDatabase` | PostgreSQL connection string |
-| `ConnectionStrings__Redis` | Redis connection string |
+| `ConnectionStrings__Redis` | Redis connection string (optional) |
 | `Jwt__Secret` | Secret used to sign JWT tokens |
 
 ### Apply migrations
