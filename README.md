@@ -13,7 +13,7 @@ This project was built as part of my backend portfolio to showcase clean archite
 
 ## Live Demo
 
-- **Swagger UI:** https://trimurlapi.azurewebsites.net/
+- **Swagger UI:** https://trimurlapi-g2hkcfhnc6gsevaa.westeurope-01.azurewebsites.net/
 
 ## Features
 
