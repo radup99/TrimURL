@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using System.Diagnostics;
+using System.Reflection;
 using System.Text;
 using TrimUrlApi.Database;
 using TrimUrlApi.Extensions;
@@ -48,6 +48,9 @@ namespace TrimUrlApi
                         Array.Empty<string>()
                     }
                 });
+
+                var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
             });
             builder.Services.AddDbContext<MainDbContext>(options =>
                 options.UseNpgsql(builder.Configuration.GetConnectionString("TrimUrlDatabase"))
