@@ -11,11 +11,11 @@ using TrimUrlApi.Repositories;
 
 namespace TrimUrlApi.Services
 {
-    public class AuthenticationService(ILogger<ShortUrlController> logger, IUserRepository userRepository, IConfiguration config) : IAuthenticationService
+    public class AuthenticationService(IUserRepository userRepository, IConfiguration config, IPasswordHasher<string> hasher) : IAuthenticationService
     {
-        private readonly ILogger<ShortUrlController> _logger = logger;
         private readonly IUserRepository _userRepository = userRepository;
         private readonly IConfiguration _config = config;
+        private readonly IPasswordHasher<string> _hasher = hasher;
 
         public async Task<User?> GetUserByCredentials(LoginPostModel loginModel)
         {
@@ -25,8 +25,7 @@ namespace TrimUrlApi.Services
                 throw new InvalidCredentialsException();
             }
             
-            var hasher = new PasswordHasher<string>();
-            var result = hasher.VerifyHashedPassword("", user.PasswordHash, loginModel.Password);
+            var result = _hasher.VerifyHashedPassword("", user.PasswordHash, loginModel.Password);
             if (result != PasswordVerificationResult.Success)
             {
                 throw new InvalidCredentialsException();
