@@ -70,7 +70,7 @@ namespace TrimUrlApi.Services
 
         public async Task<ShortUrl?> UpdateByCode(string code, ShortUrlPutModel putModel, int? userId)
         {
-            if (!IsValidUrl(putModel.Url))
+            if (putModel.Url != null && !IsValidUrl(putModel.Url))
             {
                 throw new InvalidUrlStringException(putModel.Url);
             }
@@ -78,7 +78,11 @@ namespace TrimUrlApi.Services
             var shortUrl = await GetByCodeOrThrow(code);
             EnsureOwnershipOrThrow(shortUrl, userId);
 
-            shortUrl.Url = putModel.Url;
+            if (putModel.Url != null)
+            {
+                shortUrl.Url = putModel.Url;
+            }
+            
             if (putModel.ExpiresAt != DateTime.MaxValue)
             {
                 shortUrl.ExpiresAt = putModel.ExpiresAt;
