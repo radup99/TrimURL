@@ -3,7 +3,7 @@
     public class UnavailableUsernameException : ApiException
     {
         public UnavailableUsernameException(string username)
-        : base($"Username is already in use: {username}", StatusCodes.Status400BadRequest)
+        : base($"Username is already in use: {username}", StatusCodes.Status409Conflict)
         {
         }
     }
