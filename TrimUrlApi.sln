@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrimUrlApi", "TrimUrlApi\Tr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrimUrlApi.Tests", "TrimUrlApi.Tests\TrimUrlApi.Tests.csproj", "{E6822F36-CF73-1B8A-E16F-FD41D7BE4A9B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrimUrlApi.IntegrationTests", "TrimUrlApi.IntegrationTests\TrimUrlApi.IntegrationTests.csproj", "{5EA2D43B-0BDB-4546-B09B-63513826A942}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,8 +23,15 @@ Global
 		{E6822F36-CF73-1B8A-E16F-FD41D7BE4A9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E6822F36-CF73-1B8A-E16F-FD41D7BE4A9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E6822F36-CF73-1B8A-E16F-FD41D7BE4A9B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5EA2D43B-0BDB-4546-B09B-63513826A942}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5EA2D43B-0BDB-4546-B09B-63513826A942}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5EA2D43B-0BDB-4546-B09B-63513826A942}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5EA2D43B-0BDB-4546-B09B-63513826A942}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {EB4FAF4D-02A1-4B7A-879E-0163B72EDC18}
 	EndGlobalSection
 EndGlobal
