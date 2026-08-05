@@ -30,7 +30,11 @@ public class TrimUrlWebApplicationFactory : WebApplicationFactory<Program>
             {
                 ["Jwt:Secret"] = "ThisIsAReallyLongSecretKeyForTests123!",
                 ["JwtSettings:Issuer"] = "TrimUrlTest",
-                ["JwtSettings:Audience"] = "TrimUrlTest"
+                ["JwtSettings:Audience"] = "TrimUrlTest",
+
+                ["RateLimiting:Authentication:PermitLimit"] = "100000",
+                ["RateLimiting:UrlCreation:PermitLimit"] = "100000",
+                ["RateLimiting:GeneralApi:PermitLimit"] = "100000"
             });
         });
 
