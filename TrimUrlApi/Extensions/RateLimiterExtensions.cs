@@ -5,7 +5,7 @@ namespace TrimUrlApi.Extensions;
 
 public static class RateLimiterExtensions
 {
-    public static IServiceCollection AddRateLimitingPolicies(this IServiceCollection services)
+    public static IServiceCollection AddRateLimitingPolicies(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddRateLimiter(options =>
         {
@@ -20,7 +20,9 @@ public static class RateLimiterExtensions
                     partitionKey: ip,
                     factory: _ => new FixedWindowRateLimiterOptions
                     {
-                        PermitLimit = 5,
+                        PermitLimit = configuration.GetValue(
+                            "RateLimiting:Authentication:PermitLimit",
+                            5),
                         Window = TimeSpan.FromMinutes(1),
                         QueueLimit = 0
                     });
@@ -34,7 +36,9 @@ public static class RateLimiterExtensions
                     partitionKey: ip,
                     factory: _ => new FixedWindowRateLimiterOptions
                     {
-                        PermitLimit = 20,
+                        PermitLimit = configuration.GetValue(
+                            "RateLimiting:Authentication:UrlCreation",
+                            20),
                         Window = TimeSpan.FromMinutes(1),
                         QueueLimit = 0
                     });
@@ -48,7 +52,9 @@ public static class RateLimiterExtensions
                     partitionKey: ip,
                     factory: _ => new FixedWindowRateLimiterOptions
                     {
-                        PermitLimit = 100,
+                        PermitLimit = configuration.GetValue(
+                            "RateLimiting:Authentication:GeneralApi",
+                            100),
                         Window = TimeSpan.FromMinutes(1),
                         QueueLimit = 0
                     });

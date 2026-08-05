@@ -19,7 +19,7 @@ namespace TrimUrlApi
             var builder = WebApplication.CreateBuilder(args);
 
             builder.Services.AddControllers();
-            builder.Services.AddRateLimitingPolicies();
+            builder.Services.AddRateLimitingPolicies(builder.Configuration);
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(c =>
             {
