@@ -46,6 +46,16 @@ public class TrimUrlWebApplicationFactory : WebApplicationFactory<Program>
         });
     }
 
+    public async Task ResetDatabaseAsync()
+    {
+        using var scope = Services.CreateScope();
+
+        var db = scope.ServiceProvider.GetRequiredService<MainDbContext>();
+
+        await db.Database.EnsureDeletedAsync();
+        await db.Database.EnsureCreatedAsync();
+    }
+
     protected override void Dispose(bool disposing)
     {
         base.Dispose(disposing);
