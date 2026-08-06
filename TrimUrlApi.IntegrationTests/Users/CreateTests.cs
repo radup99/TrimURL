@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity.Data;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using System.Net;
 using System.Net.Http.Json;
 using TrimUrlApi.Database;
@@ -28,7 +27,7 @@ namespace TrimUrlApi.IntegrationTests.Users
             await _factory.ResetDatabaseAsync();
 
             var response = await _client.PostAsJsonAsync(
-                "/users",
+                ApiRoutes.Users,
                 new
                 {
                     Username = "john",
@@ -45,9 +44,7 @@ namespace TrimUrlApi.IntegrationTests.Users
         {
             await _factory.ResetDatabaseAsync();
 
-            // Arrange
             using var scope = _factory.Services.CreateScope();
-
             var db = scope.ServiceProvider.GetRequiredService<MainDbContext>();
 
             await DatabaseSeeder.SeedUserAsync(
@@ -58,7 +55,7 @@ namespace TrimUrlApi.IntegrationTests.Users
 
 
             var response = await _client.PostAsJsonAsync(
-                "/users",
+                ApiRoutes.Users,
                 new
                 {
                     Username = "john",
@@ -67,7 +64,6 @@ namespace TrimUrlApi.IntegrationTests.Users
                     FullName = "John Smith"
                 });
 
-            // Assert
             Assert.Equal(HttpStatusCode.Conflict, response.StatusCode);
         }
 
@@ -76,9 +72,7 @@ namespace TrimUrlApi.IntegrationTests.Users
         {
             await _factory.ResetDatabaseAsync();
 
-            // Arrange
             using var scope = _factory.Services.CreateScope();
-
             var db = scope.ServiceProvider.GetRequiredService<MainDbContext>();
 
             await DatabaseSeeder.SeedUserAsync(
@@ -89,7 +83,7 @@ namespace TrimUrlApi.IntegrationTests.Users
 
 
             var response = await _client.PostAsJsonAsync(
-                "/users",
+                ApiRoutes.Users,
                 new
                 {
                     Username = "different_john",
@@ -98,7 +92,6 @@ namespace TrimUrlApi.IntegrationTests.Users
                     FullName = "John James"
                 });
 
-            // Assert
             Assert.Equal(HttpStatusCode.Conflict, response.StatusCode);
         }
 
@@ -108,7 +101,7 @@ namespace TrimUrlApi.IntegrationTests.Users
             await _factory.ResetDatabaseAsync();
 
             var response = await _client.PostAsJsonAsync(
-                "/users",
+                ApiRoutes.Users,
                 new
                 {
                     Username = "john:inv@l!d",
@@ -126,7 +119,7 @@ namespace TrimUrlApi.IntegrationTests.Users
             await _factory.ResetDatabaseAsync();
 
             var response = await _client.PostAsJsonAsync(
-                "/users",
+                ApiRoutes.Users,
                 new
                 {
                     Username = "john",
@@ -144,7 +137,7 @@ namespace TrimUrlApi.IntegrationTests.Users
             await _factory.ResetDatabaseAsync();
 
             var response = await _client.PostAsJsonAsync(
-                "/users",
+                ApiRoutes.Users,
                 new
                 {
                     Username = "john",
@@ -162,7 +155,7 @@ namespace TrimUrlApi.IntegrationTests.Users
             await _factory.ResetDatabaseAsync();
 
             var response = await _client.PostAsJsonAsync(
-                "/users",
+                ApiRoutes.Users,
                 new
                 {
                     User = "john",
