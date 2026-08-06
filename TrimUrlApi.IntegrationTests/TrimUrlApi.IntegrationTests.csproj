@@ -24,10 +24,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ShortUrls\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\TrimUrlApi\TrimUrlApi.csproj" />
   </ItemGroup>
 
