@@ -11,6 +11,10 @@ namespace TrimUrlApi.Models
 
         public string FullName { get; set; }
 
+        public UserResponseModel()
+        {
+        }
+
         public UserResponseModel(User user)
         {
             Username = user.Username;
