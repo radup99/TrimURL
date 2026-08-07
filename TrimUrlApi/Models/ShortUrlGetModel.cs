@@ -14,6 +14,10 @@ namespace TrimUrlApi.Models
 
         public DateTime? ExpiresAt { get; set; }
 
+        public ShortUrlGetModel() 
+        { 
+        }
+
         public ShortUrlGetModel(ShortUrl shortUrl)
         {
             Id = shortUrl.Id;
