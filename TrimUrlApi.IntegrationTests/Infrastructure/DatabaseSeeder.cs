@@ -37,7 +37,7 @@ namespace TrimUrlApi.IntegrationTests.Infrastructure
 
         public static async Task<ShortUrl> SeedShortUrlAsync(
             MainDbContext db,
-            int creatorId = 1,
+            int? creatorId = 1,
             string url = "https://google.com",
             string code = "abc123",
             DateTime? expiresAt = null,
