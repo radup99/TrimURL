@@ -5,9 +5,9 @@ TrimUrlApi/bin
 TrimUrlApi/obj
 TrimUrlApi/*.db*
 TrimUrlApi/Properties/PublishProfiles
-TrimUrlApi.Tests/.vs
-TrimUrlApi.Tests/bin
-TrimUrlApi.Tests/obj
+TrimUrlApi.UnitTests/.vs
+TrimUrlApi.UnitTests/bin
+TrimUrlApi.UnitTests/obj
 TrimUrlApi.IntegrationTests/.vs
 TrimUrlApi.IntegrationTests/bin
 TrimUrlApi.IntegrationTests/obj
