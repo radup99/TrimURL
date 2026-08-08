@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using System.Diagnostics;
 using TrimUrlApi.Entities;
 using TrimUrlApi.Enums;
 using TrimUrlApi.Exceptions;
@@ -53,10 +54,7 @@ namespace TrimUrlApi.Services
             {
                 throw new MissingUserUpdateFieldsException(username);
             }
-            if (!await IsEmailAvailable(putModel.EmailAddress))
-            {
-                throw new UnavailableEmailException(putModel.EmailAddress);
-            }
+
             if (putModel.Password != null)
             {
                 UserValidator.ValidatePassword(putModel.Password);
@@ -64,6 +62,11 @@ namespace TrimUrlApi.Services
             }
             if (putModel.EmailAddress != null)
             {
+                if (!await IsEmailAvailable(putModel.EmailAddress))
+                {
+                    throw new UnavailableEmailException(putModel.EmailAddress);
+                }
+
                 user.EmailAddress = putModel.EmailAddress;
             }
 
