@@ -25,7 +25,7 @@ namespace TrimUrlApi.IntegrationTests.Users
         }
 
         [Fact]
-        public async Task GetCurrentUser_ShouldReturnUserModel_WhenAuthenticated()
+        public async Task Get_ShouldReturnUserModel_WhenAuthenticated()
         {
             await _factory.ResetDatabaseAsync();
 
@@ -54,7 +54,7 @@ namespace TrimUrlApi.IntegrationTests.Users
         }
 
         [Fact]
-        public async Task GetCurrentUser_ShouldReturnUnauthorized_WhenTokenIsMissng()
+        public async Task Get_ShouldReturnUnauthorized_WhenTokenIsMissng()
         {
             await _factory.ResetDatabaseAsync();
 
@@ -66,7 +66,7 @@ namespace TrimUrlApi.IntegrationTests.Users
         }
 
         [Fact]
-        public async Task GetCurrentUser_ShouldReturnUnauthorized_WhenTokenIsInvalid()
+        public async Task Get_ShouldReturnUnauthorized_WhenTokenIsInvalid()
         {
             await _factory.ResetDatabaseAsync();
 

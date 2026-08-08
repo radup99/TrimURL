@@ -2,7 +2,9 @@
 using System.Net;
 using System.Net.Http.Json;
 using TrimUrlApi.Database;
+using TrimUrlApi.Entities;
 using TrimUrlApi.IntegrationTests.Infrastructure;
+using TrimUrlApi.Models;
 
 namespace TrimUrlApi.IntegrationTests.ShortUrls
 {
@@ -22,9 +24,12 @@ namespace TrimUrlApi.IntegrationTests.ShortUrls
         }
 
         [Fact]
-        public async Task Create_ShouldReturnCreated()
+        public async Task Create_ShouldCreateShortUrl()
         {
             await _factory.ResetDatabaseAsync();
+
+            using var scope = _factory.Services.CreateScope();
+            var db = scope.ServiceProvider.GetRequiredService<MainDbContext>();
 
             var response = await _client.PostAsJsonAsync(
                 ApiRoutes.ShortUrls,
@@ -34,6 +39,15 @@ namespace TrimUrlApi.IntegrationTests.ShortUrls
                 });
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+            var shortUrl = await response.Content.ReadFromJsonAsync<ShortUrl>();
+            Assert.NotNull(shortUrl);
+            Assert.Equal("https://www.google.com/", shortUrl.Url);
+
+            Assert.Contains(
+                db.ShortUrls,
+                su => su.Code == shortUrl.Code &&  su.Url == shortUrl.Url
+             );
         }
 
         [Fact]

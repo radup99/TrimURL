@@ -40,7 +40,7 @@ namespace TrimUrlApi.IntegrationTests.Users
         }
 
         [Fact]
-        public async Task Create_ShouldReturnBadRequest_WhenUsernameAlreadyExists()
+        public async Task Create_ShouldReturnConflict_WhenUsernameAlreadyExists()
         {
             await _factory.ResetDatabaseAsync();
 
@@ -68,7 +68,7 @@ namespace TrimUrlApi.IntegrationTests.Users
         }
 
         [Fact]
-        public async Task Create_ShouldReturnBadRequest_WhenEmailAlreadyExists()
+        public async Task Create_ShouldReturnConflict_WhenEmailAlreadyExists()
         {
             await _factory.ResetDatabaseAsync();
 

@@ -41,11 +41,13 @@ namespace TrimUrlApi.IntegrationTests.ShortUrls
             );
 
 
-            var response = await _client.GetAsync(
-                ApiRoutes.ShortUrlByCode(validCode)
-             );
-
+            var response = await _client.GetAsync(ApiRoutes.ShortUrlByCode(validCode));
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+            var getModel = await response.Content.ReadFromJsonAsync<ShortUrlGetModel>();
+            Assert.NotNull(getModel);
+            Assert.Equal("https://google.com", getModel.Url);
+            Assert.Equal(validCode, getModel.Code);
         }
 
 

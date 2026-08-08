@@ -44,6 +44,7 @@ This project was built as part of my backend portfolio to showcase clean archite
 - Input validation
 - Redis and In-Memory caching
 - Unit tests using xUnit + Moq
+- Integration tests
 - GitHub Actions CI/CD
 
 ## Tech Stack
@@ -59,7 +60,7 @@ This project was built as part of my backend portfolio to showcase clean archite
 - Redis
 - IMemoryCache
 
-**Unit Testing**
+**Unit/Integration Testing**
 - xUnit
 
 **DevOps**
