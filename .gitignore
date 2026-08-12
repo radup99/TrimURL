@@ -1,13 +1,6 @@
 .env
 .vs
-TrimUrlApi/.vs
-TrimUrlApi/bin
-TrimUrlApi/obj
-TrimUrlApi/*.db*
-TrimUrlApi/Properties/PublishProfiles
-TrimUrlApi.UnitTests/.vs
-TrimUrlApi.UnitTests/bin
-TrimUrlApi.UnitTests/obj
-TrimUrlApi.IntegrationTests/.vs
-TrimUrlApi.IntegrationTests/bin
-TrimUrlApi.IntegrationTests/obj
+*/.vs
+*/bin
+*/obj
+*/PublishProfiles
