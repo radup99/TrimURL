@@ -2,7 +2,7 @@
 using TrimUrlApi.Models;
 using TrimUrlApi.Repositories;
 using TrimUrlApi.Exceptions;
-using Microsoft.Extensions.Caching.Distributed;
+using TrimUrlApi.Validators;
 
 namespace TrimUrlApi.Services
 {
@@ -44,10 +44,7 @@ namespace TrimUrlApi.Services
 
         public async Task<ShortUrl> Create(ShortUrlPostModel postModel, int? userId)
         {
-            if (!IsValidUrl(postModel.Url))
-            {
-                throw new InvalidUrlStringException(postModel.Url);
-            }
+            ShortUrlValidator.ValidateUrl(postModel.Url);
 
             var code = GenerateCode();
             while (await _suRepository.ReadByCode(code) != null)
@@ -70,9 +67,9 @@ namespace TrimUrlApi.Services
 
         public async Task<ShortUrl?> UpdateByCode(string code, ShortUrlPutModel putModel, int? userId)
         {
-            if (putModel.Url != null && !IsValidUrl(putModel.Url))
+            if (putModel.Url != null)
             {
-                throw new InvalidUrlStringException(putModel.Url);
+                ShortUrlValidator.ValidateUrl(putModel.Url);
             }
 
             var shortUrl = await GetByCodeOrThrow(code);
@@ -116,12 +113,6 @@ namespace TrimUrlApi.Services
             await _cacheService.RemoveAsync(cacheKey);
 
             return shortUrl;
-        }
-
-        public bool IsValidUrl(string url)
-        {
-            _ = Uri.TryCreate(url, UriKind.Absolute, out var uriResult);
-            return uriResult != null && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
         }
 
         private async Task<ShortUrl> GetByCodeOrThrow(string code)
