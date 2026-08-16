@@ -17,7 +17,6 @@ namespace TrimUrlApi.Models
         public string EmailAddress { get; set; }
 
         [Required]
-        [StringLength(100, MinimumLength = 5)]
         public string FullName { get; set; }
     }
 }

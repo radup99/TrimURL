@@ -66,6 +66,11 @@ namespace TrimUrlApi.Validators
                 throw new InvalidFieldException("Full name cannot be empty.");
             }
 
+            if (fullName.Length < 5)
+            {
+                throw new InvalidFieldException("Full name must be at least 5 characters long.");
+            }
+
             if (fullName.Length > 100)
             {
                 throw new InvalidFieldException("Full name cannot exceed 100 characters.");
