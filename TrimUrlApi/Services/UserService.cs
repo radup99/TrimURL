@@ -27,6 +27,7 @@ namespace TrimUrlApi.Services
 
             UserValidator.ValidateUsername(postModel.Username);
             UserValidator.ValidatePassword(postModel.Password);
+            UserValidator.ValidateFullName(postModel.FullName);
 
             var user = new User
             {
