@@ -71,6 +71,58 @@ namespace TrimUrlApi.Tests.Services
         }
 
         [Fact]
+        public async Task Create_ShouldThrowException_WhenUsernameIsInvalid()
+        {
+            var postModel = new UserPostModel
+            {
+                Username = "john smith",
+                Password = StrongPassword,
+                EmailAddress = "john@test.com"
+            };
+
+            _repoMock.Setup(r => r.ReadByUsername(postModel.Username)).ReturnsAsync((User?)null);
+            _repoMock.Setup(r => r.ReadByEmail(postModel.EmailAddress)).ReturnsAsync((User?)null);
+
+            await Assert.ThrowsAsync<InvalidFieldException>(
+                () => _service.Create(postModel));
+        }
+
+        [Fact]
+        public async Task Create_ShouldThrowException_WhenPasswordIsWeak()
+        {
+            var postModel = new UserPostModel
+            {
+                Username = ValidUsername,
+                Password = "weak-password",
+                EmailAddress = "john@test.com"
+            };
+
+            _repoMock.Setup(r => r.ReadByUsername(postModel.Username)).ReturnsAsync((User?)null);
+            _repoMock.Setup(r => r.ReadByEmail(postModel.EmailAddress)).ReturnsAsync((User?)null);
+
+            await Assert.ThrowsAsync<InvalidFieldException>(
+                () => _service.Create(postModel));
+        }
+
+        [Fact]
+        public async Task Create_ShouldThrowException_WhenFullNameIsInvalid()
+        {
+            var postModel = new UserPostModel
+            {
+                Username = ValidUsername,
+                Password = "weak-password",
+                EmailAddress = "john@test.com",
+                FullName = "J0hn Sm!th"
+            };
+
+            _repoMock.Setup(r => r.ReadByUsername(postModel.Username)).ReturnsAsync((User?)null);
+            _repoMock.Setup(r => r.ReadByEmail(postModel.EmailAddress)).ReturnsAsync((User?)null);
+
+            await Assert.ThrowsAsync<InvalidFieldException>(
+                () => _service.Create(postModel));
+        }
+
+        [Fact]
         public async Task Create_ShouldThrowException_WhenEmailAlreadyExists()
         {
             var postModel = new UserPostModel
@@ -221,6 +273,27 @@ namespace TrimUrlApi.Tests.Services
             _repoMock.Setup(r => r.ReadByUsername(ValidUsername)).ReturnsAsync(user);
 
             await Assert.ThrowsAsync<MissingUserUpdateFieldsException>(() => _service.UpdateByUsername(ValidUsername, putModel));
+        }
+
+        [Fact]
+        public async Task UpdateByUsername_ShouldThrowException_WhenPasswordIsWeak()
+        {
+            var user = new User
+            {
+                Id = 1,
+                Username = ValidUsername,
+                PasswordHash = "oldhash",
+                EmailAddress = "old@test.com"
+            };
+
+            var putModel = new UserPutModel
+            {
+                Password = "weak-password"
+            };
+
+            _repoMock.Setup(r => r.ReadByUsername(ValidUsername)).ReturnsAsync(user);
+
+            await Assert.ThrowsAsync<InvalidFieldException>(() => _service.UpdateByUsername(ValidUsername, putModel));
         }
 
         [Fact]
