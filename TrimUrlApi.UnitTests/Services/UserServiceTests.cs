@@ -110,7 +110,7 @@ namespace TrimUrlApi.Tests.Services
             var postModel = new UserPostModel
             {
                 Username = ValidUsername,
-                Password = "weak-password",
+                Password = StrongPassword,
                 EmailAddress = "john@test.com",
                 FullName = "J0hn Sm!th"
             };
