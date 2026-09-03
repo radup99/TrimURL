@@ -6,7 +6,7 @@ using TrimUrlApi.Models;
 using TrimUrlApi.Repositories;
 using TrimUrlApi.Services;
 
-namespace TrimUrlApi.Tests.Services
+namespace TrimUrlApi.UnitTests.Services
 {
     public class UserServiceTests
     {

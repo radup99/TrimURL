@@ -1,13 +1,16 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Moq;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using TrimUrlApi.Entities;
+using TrimUrlApi.Enums;
 using TrimUrlApi.Exceptions;
 using TrimUrlApi.Models;
 using TrimUrlApi.Repositories;
 using TrimUrlApi.Services;
 
-namespace TrimUrlApi.Tests.Services
+namespace TrimUrlApi.UnitTests.Services
 {
     public class AuthenticationServiceTests
     {
@@ -27,7 +30,7 @@ namespace TrimUrlApi.Tests.Services
         }
 
         [Fact]
-        public async Task GetUserByCredentials_ValidCredentials_ReturnsUser()
+        public async Task GetUserByCredentials_ShouldReturnUser_WhenCredentialsAreValid()
         {
             var loginModel = new LoginPostModel
             {
@@ -53,7 +56,7 @@ namespace TrimUrlApi.Tests.Services
         }
 
         [Fact]
-        public async Task GetUserByCredentials_UserDoesNotExist_ThrowsInvalidCredentialsException()
+        public async Task GetUserByCredentials_ShouldThrowException_WhenUserDoesNotExist()
         {
             var loginModel = new LoginPostModel
             {
@@ -66,7 +69,7 @@ namespace TrimUrlApi.Tests.Services
         }
 
         [Fact]
-        public async Task GetUserByCredentials_InvalidPassword_ThrowsInvalidCredentialsException()
+        public async Task GetUserByCredentials_ShouldThrowException_WhenPasswordIsIncorrect()
         {
             var loginModel = new LoginPostModel
             {
@@ -89,5 +92,50 @@ namespace TrimUrlApi.Tests.Services
 
             await Assert.ThrowsAsync<InvalidCredentialsException>(() => _service.GetUserByCredentials(loginModel));
         }
+
+        [Fact]
+        public void GenerateJwtToken_ShouldReturnValidJwt_WhenUserIsValid()
+                {
+                    // Arrange
+                    var configuration = new ConfigurationBuilder()
+                        .AddInMemoryCollection(new Dictionary<string, string?>
+                        {
+                            ["Jwt:Secret"] = "ThisIsAReallyLongSecretKeyForTests123!",
+                            ["JwtSettings:Issuer"] = "TrimUrlApi",
+                            ["JwtSettings:Audience"] = "TrimUrl",
+                            ["JwtSettings:ExpiresInHours"] = "336"
+                        })
+                        .Build();
+
+                    var service = new AuthenticationService(_repoMock.Object, configuration, _hasherMock.Object);
+
+                    var user = new User
+                    {
+                        Id = 1,
+                        Username = "john",
+                        Role = UserRole.Default
+                    };
+
+                    var tokenString = service.GenerateJwtToken(user);
+                    Assert.False(string.IsNullOrWhiteSpace(tokenString));
+
+                    var handler = new JwtSecurityTokenHandler();
+                    var token = handler.ReadJwtToken(tokenString);
+
+                    Assert.Equal("1", token.Claims.First(c => c.Type == JwtRegisteredClaimNames.Sub).Value);
+                    Assert.Equal("john", token.Claims.First(c => c.Type == "username").Value);
+                    Assert.Equal(
+                        user.Role.ToString(),
+                        token.Claims.First(c => c.Type == ClaimTypes.Role).Value);
+                    Assert.Equal(
+                        ((int)user.Role).ToString(),
+                        token.Claims.First(c => c.Type == "roleNum").Value);
+
+                    Assert.Equal("TrimUrlApi", token.Issuer);
+                    Assert.Contains("TrimUrlClient", token.Audiences);
+
+                    Assert.True(token.ValidTo > DateTime.UtcNow);
+                    Assert.True(token.ValidTo <= DateTime.UtcNow.AddHours(2).AddSeconds(1));
+                }
     }
 }
