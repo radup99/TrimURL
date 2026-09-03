@@ -132,10 +132,10 @@ namespace TrimUrlApi.UnitTests.Services
                         token.Claims.First(c => c.Type == "roleNum").Value);
 
                     Assert.Equal("TrimUrlApi", token.Issuer);
-                    Assert.Contains("TrimUrlClient", token.Audiences);
+                    Assert.Contains("TrimUrl", token.Audiences);
 
                     Assert.True(token.ValidTo > DateTime.UtcNow);
-                    Assert.True(token.ValidTo <= DateTime.UtcNow.AddHours(2).AddSeconds(1));
+                    Assert.True(token.ValidTo <= DateTime.UtcNow.AddHours(336).AddSeconds(1));
                 }
     }
 }
